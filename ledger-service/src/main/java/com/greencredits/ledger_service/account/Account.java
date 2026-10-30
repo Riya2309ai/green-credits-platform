@@ -16,18 +16,18 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "owner_id", nullable = false)
+    @Column(name = "owner_id", nullable = false, length = 64)
     private String ownerId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private AccountType type;
 
     @Column(nullable = false)
     private long balance;
 
     @Column(name = "created_at",  nullable = false, updatable = false)
-    private Instant createdAt= Instant.now();
+    private Instant createdAt = Instant.now();
 
     protected Account() {}
 
