@@ -36,6 +36,14 @@ public class Account {
         this.type = type;
         this.balance = 0;
     }
-
+    public boolean canDebit(long amount){
+        return type==AccountType.SYSTEM || balance>=amount;
+    }
+    public void debit(long amount){
+        this.balance-=amount;
+    }
+    public void credit(long amount){
+        this.balance+=amount;
+    }
 
 }
