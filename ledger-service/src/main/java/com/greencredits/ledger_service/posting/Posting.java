@@ -3,9 +3,18 @@ package com.greencredits.ledger_service.posting;
 import com.greencredits.ledger_service.account.Account;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 
 import java.time.Instant;
 
+@Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "postings", uniqueConstraints = @UniqueConstraint(name = "uk_postings_idempotency", columnNames = "idempotency_key"))
+@Check(constraints = "amount > 0")
 public class Posting { //Posting stores the details of a transfer from account A to account B.
 
     @Id
