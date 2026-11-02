@@ -1,0 +1,18 @@
+server:
+  port: 8082
+  error:
+    include-message: always
+spring:
+  application:
+    name: action-intake-service
+  mongodb:
+    uri: mongodb://localhost:27017/intake_db
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      properties:
+        max.block.ms: 5000
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
