@@ -5,6 +5,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 @Component
 public class ActionEventPublisher {
     public static final String TOPIC = "action.submitted";
@@ -17,7 +21,7 @@ public class ActionEventPublisher {
         this.json = json;
     }
 
-    public void publish(Action action){
+    public void publish(Action action) throws Exception {
         ActionSubmittedEvent event=new ActionSubmittedEvent(
                 "action-submitted-" + action.getId(),
                 action.getId(),
@@ -26,7 +30,9 @@ public class ActionEventPublisher {
                 action.getQuantity(),
                 action.getQrToken(),
                 action.getSubmittedAt());
-
+        String payload = json.writeValueAsString(event);
+        // key = userId keeps one user's events in order on one partition
+        kafka.send(TOPIC, action.getUserId(), payload).get(5, TimeUnit.SECONDS);
     }
 
 }
