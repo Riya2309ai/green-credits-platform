@@ -3,7 +3,27 @@ server:
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ledger-service
+              uri: lb://ledger-service
+              predicates:
+                - Path=/api/accounts/**,/api/postings/**
+            - id: action-intake-service
+              uri: lb://action-intake-service
+              predicates:
+                - Path=/api/actions/**
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+management:
+  tracing:
+    sampling:
+      probability: 1.0
